@@ -20,8 +20,13 @@ func NewLimiter(limit int) *Limiter {
 	return &Limiter{rate.NewLimiter(rate.Limit(limit), 4)}
 }
 
-// Limit takes anything that implements the http.Handler interface and returns
-// a handler function that serves the request.
+// Limit limits the number of requests taken by the server.
+// It takes anything that implements the http.Handler interface and returns
+// a handler function that checks the request rate and serves the request
+// if the the limit has not been reached.
+// If the limit is reached a 429 http code is returned to the requester
+// with a message that indicates how long they need to wait until
+// another request can be made.
 func (limiter *Limiter) Limit(handler http.Handler) http.Handler {
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
