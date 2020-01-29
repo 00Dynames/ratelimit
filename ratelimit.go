@@ -1,11 +1,11 @@
-package Limit
+package ratelimit
 
 import (
 	"net/http"
 )
 
 type Limiter struct {
-	rate int
+	limit int
 }
 
 func NewLimiter(limit int) *Limiter {
