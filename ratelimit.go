@@ -11,12 +11,10 @@ type Limiter struct {
 }
 
 func NewLimiter(limit int) *Limiter {
-	fmt.Println(limit)
 	return &Limiter{rate.NewLimiter(rate.Limit(limit), 4)}
 }
 
 func (limiter *Limiter) Limit(handler http.Handler) http.Handler {
-	limiter.l.Limit()
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
 			delay := limiter.l.Reserve().Delay()
