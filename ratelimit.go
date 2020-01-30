@@ -16,8 +16,9 @@ type Limiter struct {
 
 // NewLimiter takes a limit that represents requests per second (rps)
 // and returns an instance of a Limiter struct.
-func NewLimiter(limit int) *Limiter {
-	return &Limiter{rate.NewLimiter(rate.Limit(limit), 4)}
+func NewLimiter(limit float64, b int) *Limiter {
+	// TODO: NewLimiter b argument means bucket size, should not be 0
+	return &Limiter{rate.NewLimiter(rate.Limit(limit), b)}
 }
 
 // Limit limits the number of requests taken by the server.
