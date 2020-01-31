@@ -30,11 +30,7 @@ type Limiter struct {
 // It returns an instance of a Limiter struct.
 func NewLimiter(limit float64, b int, userLimit bool) *Limiter {
 
-	if userLimit {
-		return &Limiter{rate.Limit(limit), b, userLimit, make(map[string]*rate.Limiter)}
-	}
-
-	return &Limiter{rate.Limit(limit), b, false, make(map[string]*rate.Limiter)}
+	return &Limiter{rate.Limit(limit), b, userLimit, make(map[string]*rate.Limiter)}
 }
 
 // Limit limits the number of requests taken by the server.
