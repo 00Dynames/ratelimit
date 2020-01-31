@@ -19,7 +19,7 @@ func main() {
   mux.HandleFunc("/", okHandler)
 
   // limiter restricts requests to 1 request per second
-  limiter := ratelimit.NewLimiter(1, 1)
+  limiter := ratelimit.NewLimiter(1, 1, false)
 
   http.ListenAndServe(":4000", limiter.Limit(mux))
 }
