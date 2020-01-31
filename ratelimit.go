@@ -29,7 +29,6 @@ type Limiter struct {
 // per user basis when set to true.
 // It returns an instance of a Limiter struct.
 func NewLimiter(limit float64, b int, userLimit bool) *Limiter {
-
 	return &Limiter{rate.Limit(limit), b, userLimit, make(map[string]*rate.Limiter)}
 }
 
