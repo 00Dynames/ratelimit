@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-// A Limiter stores a map of limiters where each entry
+// A Limiter stores a map of *rate.limiters where each entry
 // represents a different request origin, using the IP address
 // as the key.
 // It provides a method Limit that checks if the rate limit
