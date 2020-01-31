@@ -14,10 +14,12 @@ type Limiter struct {
 	l *rate.Limiter
 }
 
-// NewLimiter takes a limit that represents requests per second (rps)
-// and returns an instance of a Limiter struct.
+// NewLimiter takes a limit and an integer b where
+// b represents a b sized bucket of tokens that is
+// re-filled at limit rps (requests per second).
+// See https://en.wikipedia.org/wiki/Token_bucket for more about token buckets.
+// It returns an instance of a Limiter struct.
 func NewLimiter(limit float64, b int) *Limiter {
-	// TODO: NewLimiter b argument means bucket size, should not be 0
 	return &Limiter{rate.NewLimiter(rate.Limit(limit), b)}
 }
 

@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+// 429 response should be returned when the rate limit
+// is exceeded.
 func TestLimitExceeded(t *testing.T) {
 
 	limiter := NewLimiter(0.1, 1)
