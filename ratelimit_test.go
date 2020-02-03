@@ -1,10 +1,12 @@
 package ratelimit
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
 // 429 response should be returned when the rate limit
@@ -63,4 +65,8 @@ func TestLimitExceededPerUser(t *testing.T) {
 	result.ServeHTTP(rr, req)
 
 	assert.Equal(t, 200, rr.Code)
+}
+
+func TestRate(t *testing.T) {
+	fmt.Println(Rate(10, time.Minute))
 }
