@@ -88,6 +88,8 @@ func (lim *Limiter) getVisitor(ip string) *rate.Limiter {
 // Rate takes a request limit and a time interval and calculates
 // the rate.Limit and n inputs for rate.NewLimiter
 func Rate(req int, interval time.Duration) (rate.Limit, int) {
-	fmt.Println(time.Hour)
-	return rate.Limit(0), 0
+
+	seconds := int(interval / time.Second)
+	r := float64(req) / float64(seconds)
+	return rate.Limit(r), req
 }
