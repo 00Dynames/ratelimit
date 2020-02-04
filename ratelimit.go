@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"time"
 )
 
 // A Limiter stores a map of *rate.limiters where each entry
@@ -82,4 +83,13 @@ func (lim *Limiter) getVisitor(ip string) *rate.Limiter {
 	}
 
 	return limiter
+}
+
+// Rate takes a request limit and a time interval and calculates
+// the rate.Limit and n inputs for rate.NewLimiter
+func Rate(req int, interval time.Duration) (rate.Limit, int) {
+
+	seconds := int(interval / time.Second)
+	r := float64(req) / float64(seconds)
+	return rate.Limit(r), req
 }

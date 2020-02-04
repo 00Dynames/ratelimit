@@ -2,9 +2,13 @@ package ratelimit
 
 import (
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/time/rate"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
 // 429 response should be returned when the rate limit
@@ -63,4 +67,32 @@ func TestLimitExceededPerUser(t *testing.T) {
 	result.ServeHTTP(rr, req)
 
 	assert.Equal(t, 200, rr.Code)
+}
+
+func TestLimitInternalServerError(t *testing.T) {
+	log.SetOutput(ioutil.Discard)
+	limiter := NewLimiter(0.1, 1, true)
+
+	okHandler := func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("OK"))
+	}
+
+	result := limiter.Limit(http.HandlerFunc(okHandler))
+
+	var rr *httptest.ResponseRecorder
+
+	req, _ := http.NewRequest("GET", "https://example.com/", nil)
+	req.RemoteAddr = "localhost"
+	rr = httptest.NewRecorder()
+	result.ServeHTTP(rr, req)
+
+	assert.Equal(t, 500, rr.Code)
+}
+
+// Rate returns the correct inputs for rate.NewLimiter
+// given a request limit and a time interval
+func TestRate(t *testing.T) {
+	resultRate, resultB := Rate(100, time.Hour)
+	assert.Equal(t, rate.Limit(0.027777777777777776), resultRate)
+	assert.Equal(t, 100, resultB)
 }
