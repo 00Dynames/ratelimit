@@ -12,14 +12,16 @@ package main
 import (
   "github.com/00Dynames/ratelimit"
   "net/http"
+  "time"
 )
 
 func main() {
   mux := http.NewServeMux()
   mux.HandleFunc("/", okHandler)
 
-  // limiter restricts requests to 1 request per second
-  limiter := ratelimit.NewLimiter(1, 1, false)
+  // limiter restricts requests to 10 request per minute 
+  lim, b := ratelimit.Rate(10, time.Minute)
+  limiter := ratelimit.NewLimiter(lim, b , false)
 
   http.ListenAndServe(":4000", limiter.Limit(mux))
 }
