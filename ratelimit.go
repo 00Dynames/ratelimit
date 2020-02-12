@@ -10,6 +10,9 @@ import (
 	"time"
 )
 
+type rateLimiter interface {
+}
+
 // A Limiter stores a map of *rate.limiters where each entry
 // represents a different request origin, using the IP address
 // as the key.
