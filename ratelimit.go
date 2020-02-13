@@ -11,6 +11,7 @@ import (
 )
 
 type rateLimiter interface {
+	Allow(requests int, interval time.Duration) (bool, float64)
 }
 
 // A Limiter stores a map of *rate.limiters where each entry
